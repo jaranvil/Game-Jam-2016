@@ -15,10 +15,20 @@ import java.util.ArrayList;
  */
 public class Character {
     private Context context;
-    private int x = 500;
-    private int y = 500;
+    protected int x = 500;
+    protected int y = 500;
+    protected int width;
+    protected int height;
     private int arrayPosition = 0;
     protected boolean moving = false;
+
+    public Character(int width, int height, BitmapFactory.Options options)
+    {
+        x = width/2;
+        y = height/2;
+        this.width = options.outWidth;
+        this.height = options.outHeight;
+    }
 
     public void draw(Canvas c, Paint p, int height, int width, Context context, Bitmap[] walking)
     {
@@ -31,6 +41,10 @@ public class Character {
             c.drawBitmap(walking[arrayPosition], x, y, p);
         else
             c.drawBitmap(walking[0], x, y, p);
+
+        p.setStyle(Paint.Style.STROKE);
+        c.drawRect(x, y, x + this.width, y + this.height, p);
+        p.setStyle(Paint.Style.FILL);
 
         arrayPosition++;
         if (arrayPosition > walking.length-1)

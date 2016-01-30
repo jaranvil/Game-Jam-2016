@@ -14,28 +14,56 @@ public class Barrier {
     protected int top;
     protected int bottom;
     protected int right;
+    protected boolean interactive = false;
 
-    public Barrier(int x, int y, int width, int height)
+    private int COLLISION_PADDING = 50;
+
+    public Barrier(int x, int y, int width, int height, boolean interactive)
     {
         this.right = x + width;
         this.bottom = y + height;
         this.left = x;
         this.top = y;
+        this.interactive = interactive;
     }
 
-    public String isTouchingHorizontal(int objX, int objY, int objWidth, int objHeight)
+    public boolean isTouchingRight(int characterTop, int characterLeft, int characterRight, int characterBottom)
     {
-        int rightSide = objX + objWidth;
-        int leftSide = objX;
-        int topSide = objY;
-        int bottomSide = objY + objHeight;
-
         // check right
-        if (rightSide > left && rightSide < (right))
-            if (topSide < bottom || bottomSide > top)
-                return "right";
+        if (characterRight >= (left-COLLISION_PADDING) && characterRight <= (right))
+            if ((top >= characterTop && top <= characterBottom) || (bottom >= characterTop && bottom <= characterBottom))
+            {
+                return false;
+            }
 
-        return "";
+
+        return true;
     }
 
+    public boolean isTouchingLeft(int characterTop, int characterLeft, int characterRight, int characterBottom)
+    {
+        if (characterLeft >= left && characterLeft <= (right+COLLISION_PADDING))
+            if ((top >= characterTop && top <= characterBottom) || (bottom >= characterTop && bottom <= characterBottom))
+                return false;
+
+        return true;
+    }
+
+    public boolean isTouchingUp(int characterTop, int characterLeft, int characterRight, int characterBottom)
+    {
+        if (characterTop >= top && characterTop <= (bottom + COLLISION_PADDING))
+            if ((left >= characterLeft && left <= characterRight) || (right >= characterLeft && right <= characterRight))
+                return false;
+
+        return true;
+    }
+
+    public boolean isTouchingDown(int characterTop, int characterLeft, int characterRight, int characterBottom)
+    {
+        if (characterBottom >= (top-COLLISION_PADDING) && characterBottom <= (bottom))
+            if ((left >= characterLeft && left <= characterRight) || (right >= characterLeft && right <= characterRight))
+                return false;
+
+        return true;
+    }
 }
