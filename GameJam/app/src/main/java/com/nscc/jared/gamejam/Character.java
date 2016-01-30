@@ -1,25 +1,40 @@
 package com.nscc.jared.gamejam;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+
+import java.util.ArrayList;
 
 /**
  * Created by Jared on 1/29/2016.
  */
 public class Character {
-    private int horizontalMovement;
-    private int verticalMovement;
+    private Context context;
+    private int x = 500;
+    private int y = 500;
+    private int arrayPosition = 0;
+    protected boolean moving = false;
 
-    public void draw(Canvas c, Paint p, int height, int width)
+    public void draw(Canvas c, Paint p, int height, int width, Context context, Bitmap[] walking)
     {
-        p.setColor(Color.parseColor("#ffff00"));
-        c.drawCircle(width/2, height/2, 20, p);
+        this.context = context;
+
+        x = width/2;
+        y = height/2;
+
+        if (moving)
+            c.drawBitmap(walking[arrayPosition], x, y, p);
+        else
+            c.drawBitmap(walking[0], x, y, p);
+
+        arrayPosition++;
+        if (arrayPosition > walking.length-1)
+            arrayPosition = 0;
     }
 
-    public void setDurection(int x, int y)
-    {
-        horizontalMovement = x;
-        verticalMovement = y;
-    }
 }
