@@ -42,9 +42,7 @@ public class Character {
         else
             c.drawBitmap(walking[0], x, y, p);
 
-        p.setStyle(Paint.Style.STROKE);
-        c.drawRect(x, y, x + this.width, y + this.height, p);
-        p.setStyle(Paint.Style.FILL);
+
 
         arrayPosition++;
         if (arrayPosition > walking.length-1)

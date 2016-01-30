@@ -20,7 +20,7 @@ public class Joystick {
     public void draw(Canvas c, Paint paint, int height)
     {
         y = height - x;
-        paint.setColor(Color.parseColor("#ffff00"));
+        paint.setColor(Color.parseColor("#444444"));
         paint.setAlpha(50);
         c.drawCircle(x, y, radius, paint);
         paint.setColor(Color.parseColor("#000000"));

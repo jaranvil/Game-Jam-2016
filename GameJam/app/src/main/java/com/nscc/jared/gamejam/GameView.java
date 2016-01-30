@@ -34,7 +34,9 @@ public class GameView extends View {
     private boolean canMoveUp = true;
     private boolean canMoveDown = true;
     private boolean dialogOpen = false;
+
     protected boolean interacting = false;
+    protected int interactingWith = 0;
 
     private BitmapFactory.Options options = new BitmapFactory.Options();
     Bitmap[] walking = {BitmapFactory.decodeResource(getResources(), R.drawable.walk1, options),
@@ -51,29 +53,55 @@ public class GameView extends View {
     private Bitmap wall_left = BitmapFactory.decodeResource(getResources(), R.drawable.wall_left, options2);
     private Bitmap crate = BitmapFactory.decodeResource(getResources(), R.drawable.crate);
     private Bitmap jukebox = BitmapFactory.decodeResource(getResources(), R.drawable.jukebox);
+    private Bitmap pot = BitmapFactory.decodeResource(getResources(), R.drawable.pot);
+    private Bitmap skelly = BitmapFactory.decodeResource(getResources(), R.drawable.skelly);
     private Bitmap floor = BitmapFactory.decodeResource(getResources(), R.drawable.floor);
+
+    private BitmapFactory.Options options3 = new BitmapFactory.Options();
+    private Bitmap rubble = BitmapFactory.decodeResource(getResources(), R.drawable.rubble, options3);
 
     // 1 - wall top
     // 2 - wall bottom
     // 3 - wall left
     // 4 - wall right
-    // 5 - crate
-    // 6 - jukebox
+
     private int room[][] = {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                            {3,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,4},
                             {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
                             {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
                             {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
                             {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
                             {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,4},
                             {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
                             {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+                            {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2}};
+
+    // 6 - puddle
+    // 7 - jukebox
+    // 8 - crate
+    // 9 - pot
+    // 10 - skelly
+    private int objectsInRoom[][] = {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                            {3,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+                            {3,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+                            {3,0,9,0,0,0,0,0,0,8,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,4},
+                            {3,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+                            {3,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+                            {3,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+                            {3,0,0,0,0,0,0,0,0,8,8,8,8,8,8,8,8,0,0,0,0,0,0,0,0,4},
+                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,4},
+                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+                            {3,0,10,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
                             {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2}};
 
     public GameView(Context context, AttributeSet attrs)  {
@@ -105,21 +133,48 @@ public class GameView extends View {
         interacting = false;
         for (int i=0;i<barriers.size();i++)
         {
+            boolean movmentChangeThisIteration = false;
             if (canMoveRight)
+            {
                 canMoveRight = barriers.get(i).isTouchingRight(character.y, character.x, character.x + character.width, character.y + character.height);
+                if (!canMoveRight)
+                    movmentChangeThisIteration = true;
+            }
             if (canMoveLeft)
+            {
                 canMoveLeft = barriers.get(i).isTouchingLeft(character.y, character.x, character.x + character.width, character.y + character.height);
+                if (!canMoveLeft)
+                    movmentChangeThisIteration = true;
+            }
             if (canMoveUp)
+            {
                 canMoveUp = barriers.get(i).isTouchingUp(character.y, character.x, character.x + character.width, character.y + character.height);
+                if (!canMoveUp)
+                    movmentChangeThisIteration = true;
+            }
             if (canMoveDown)
+            {
                 canMoveDown = barriers.get(i).isTouchingDown(character.y, character.x, character.x + character.width, character.y + character.height);
+                if (!canMoveDown)
+                    movmentChangeThisIteration = true;
+            }
 
-            if (!canMoveLeft || !canMoveDown || !canMoveRight || !canMoveUp)
+            if (movmentChangeThisIteration)
+            {
                 if (barriers.get(i).interactive)
                     this.interacting = true;
+                    this.interactingWith = barriers.get(i).type;
+            }
         }
 
-
+        // messy way to prevent the character being fully stuck
+        if (!canMoveLeft && !canMoveUp && !canMoveRight && !canMoveDown)
+        {
+            canMoveRight = true;
+            canMoveDown = true;
+            canMoveUp = true;
+            canMoveLeft = true;
+        }
 
         barriers.clear();
         int temp = options2.outWidth;
@@ -134,35 +189,65 @@ public class GameView extends View {
                 if (room[row][col] == 1)
                 {
                     c.drawBitmap(wall_top, x, y, paint);
-                    barriers.add(new Barrier(x, y, temp, temp, false));
+                    barriers.add(new Barrier(x, y, temp, temp, false, 0));
                 }
                 if (room[row][col] == 2)
                 {
                     c.drawBitmap(wall_bottom, x, y, paint);
-                    barriers.add(new Barrier(x, y, temp, temp, false));
+                    barriers.add(new Barrier(x, y, temp, temp, false, 0));
                 }
                 if (room[row][col] == 3)
                 {
                     c.drawBitmap(wall_left, x, y, paint);
-                    barriers.add(new Barrier(x, y, temp, temp, false));
+                    barriers.add(new Barrier(x, y, temp, temp, false, 0));
                 }
                 if (room[row][col] == 4)
                 {
                     c.drawBitmap(wall_right, x, y, paint);
-                    barriers.add(new Barrier(x, y, temp, temp, false));
+                    barriers.add(new Barrier(x, y, temp, temp, false, 0));
                 }
-                if (room[row][col] == 5)
-                {
-                    c.drawBitmap(crate, x, y, paint);
-                    barriers.add(new Barrier(x, y, temp, temp, false));
-                }
-                if (room[row][col] == 6)
-                {
-                    c.drawBitmap(jukebox, x, y, paint);
-                    barriers.add(new Barrier(x, y, temp, temp, true));
-                }
+
                 if (room[row][col] == 0)
                     c.drawBitmap(floor, x, y, paint);
+            }
+        }
+
+        int objWidth = options3.outWidth;
+        int objHeight = options3.outHeight;
+        for (int row=0;row < objectsInRoom.length;row++) {
+            for (int col = 0; col < objectsInRoom[row].length; col++) {
+                int x = (col*temp) + horizontalOffset;
+                int y = (row*temp) + verticalOffset;
+
+                // TODO - switch case
+                if (objectsInRoom[row][col] == 6)
+                {
+                    c.drawBitmap(rubble, x, y, paint);
+                    barriers.add(new Barrier(x, y, temp, temp, true, 1));
+                    c.drawRect(x, y, x + temp, y + temp, paint);
+                }
+                if (objectsInRoom[row][col] == 7)
+                {
+                    c.drawBitmap(jukebox, x, y, paint);
+                    barriers.add(new Barrier(x, y, temp, temp, true, 2));
+                    c.drawRect(x, y, x + temp, y + temp, paint);
+                }
+                if (objectsInRoom[row][col] == 8)
+                {
+                    c.drawBitmap(crate, x, y, paint);
+                    barriers.add(new Barrier(x, y, temp, temp, false, 0));
+                }
+                if (objectsInRoom[row][col] == 9)
+                {
+                    c.drawBitmap(pot, x, y, paint);
+                    barriers.add(new Barrier(x, y, temp, temp, true, 3));
+                }
+                if (objectsInRoom[row][col] == 10)
+                {
+                    c.drawBitmap(skelly, x, y, paint);
+                    barriers.add(new Barrier(x, y, temp, temp, true, 4));
+                }
+
             }
         }
 
@@ -170,12 +255,13 @@ public class GameView extends View {
         {
             // show interact button
             paint.setColor(Color.parseColor("#0066ff"));
-            paint.setAlpha(99);
-            c.drawRect(this.width - 450, this.height - 250, this.width - 50, this.height - 50, paint);
-            paint.setColor(Color.parseColor("#ffffff"));
-            paint.setTextSize(86);
-            c.drawText("Interact", this.width - 400, this.height - 150, paint);
+            //paint.setAlpha(99);
+            //c.drawRect(this.width - 450, this.height - 250, this.width - 50, this.height - 50, paint);
+            c.drawCircle(this.width - 150, this.height-150, 150, paint);
 
+            paint.setColor(Color.parseColor("#ffffff"));
+            paint.setTextSize(160);
+            c.drawText("?", this.width - 175, this.height - 100, paint);
         }
 
         joystick.draw(c, paint, height);
@@ -185,14 +271,22 @@ public class GameView extends View {
         {
             paint.setColor(Color.parseColor("#000000"));
             paint.setAlpha(90);
-            c.drawRect(100, 100, this.width-100, this.height/3, paint);
+            c.drawRect(100, 100, this.width - 100, this.height / 3, paint);
             paint.setColor(Color.parseColor("#ffffff"));
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(10);
-            c.drawRect(120, 120, this.width - 120, this.height/3 - 20, paint);
+            c.drawRect(120, 120, this.width - 120, this.height / 3 - 20, paint);
             paint.setStyle(Paint.Style.FILL);
             paint.setTextSize(72);
-            c.drawText("This is a jukebox.", 200, 200, paint);
+
+            if (this.interactingWith == 1)
+                c.drawText("I think this is a puddle?", 200, 200, paint);
+            if (this.interactingWith == 2)
+                c.drawText("This is a jukebox. Play a song", 200, 200, paint);
+            if (this.interactingWith == 3)
+                c.drawText("Maybe I should plant a flower?", 200, 200, paint);
+            if (this.interactingWith == 4)
+                c.drawText("Poor human", 200, 200, paint);
         }
     }
 

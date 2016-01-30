@@ -15,16 +15,18 @@ public class Barrier {
     protected int bottom;
     protected int right;
     protected boolean interactive = false;
+    protected int type;
 
     private int COLLISION_PADDING = 50;
 
-    public Barrier(int x, int y, int width, int height, boolean interactive)
+    public Barrier(int x, int y, int width, int height, boolean interactive, int type)
     {
         this.right = x + width;
         this.bottom = y + height;
         this.left = x;
         this.top = y;
         this.interactive = interactive;
+        this.type = type;
     }
 
     public boolean isTouchingRight(int characterTop, int characterLeft, int characterRight, int characterBottom)
@@ -35,8 +37,6 @@ public class Barrier {
             {
                 return false;
             }
-
-
         return true;
     }
 
