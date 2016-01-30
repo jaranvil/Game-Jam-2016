@@ -17,7 +17,7 @@ public class Barrier {
     protected boolean interactive = false;
     protected int type;
 
-    private int COLLISION_PADDING = 50;
+    private int COLLISION_PADDING = 75;
 
     public Barrier(int x, int y, int width, int height, boolean interactive, int type)
     {

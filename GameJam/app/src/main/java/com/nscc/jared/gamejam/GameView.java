@@ -60,49 +60,9 @@ public class GameView extends View {
     private BitmapFactory.Options options3 = new BitmapFactory.Options();
     private Bitmap rubble = BitmapFactory.decodeResource(getResources(), R.drawable.rubble, options3);
 
-    // 1 - wall top
-    // 2 - wall bottom
-    // 3 - wall left
-    // 4 - wall right
+    private Room room = new Room();
 
-    private int room[][] = {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2}};
 
-    // 6 - puddle
-    // 7 - jukebox
-    // 8 - crate
-    // 9 - pot
-    // 10 - skelly
-    private int objectsInRoom[][] = {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                            {3,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,9,0,0,0,0,0,0,8,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,8,8,8,8,8,8,8,8,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,4},
-                            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {3,0,10,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-                            {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2}};
 
     public GameView(Context context, AttributeSet attrs)  {
         super(context, attrs);
@@ -118,7 +78,7 @@ public class GameView extends View {
         if (loading)
         {
             loading = false;
-
+            room.generationRoom();
         }
 
         // TODO - remove color parsing from onDraw method
@@ -178,71 +138,71 @@ public class GameView extends View {
 
         barriers.clear();
         int temp = options2.outWidth;
-        for (int row=0;row < room.length;row++)
+        for (int row=0;row < room.layer1.length;row++)
         {
-            for (int col=0;col < room[row].length;col++)
+            for (int col=0;col < room.layer1[row].length;col++)
             {
                 int x = (col*temp) + horizontalOffset;
                 int y = (row*temp) + verticalOffset;
 
                 // TODO - switch case
-                if (room[row][col] == 1)
+                if (room.layer1[row][col] == 1)
                 {
                     c.drawBitmap(wall_top, x, y, paint);
                     barriers.add(new Barrier(x, y, temp, temp, false, 0));
                 }
-                if (room[row][col] == 2)
+                if (room.layer1[row][col] == 2)
                 {
                     c.drawBitmap(wall_bottom, x, y, paint);
                     barriers.add(new Barrier(x, y, temp, temp, false, 0));
                 }
-                if (room[row][col] == 3)
+                if (room.layer1[row][col] == 3)
                 {
                     c.drawBitmap(wall_left, x, y, paint);
                     barriers.add(new Barrier(x, y, temp, temp, false, 0));
                 }
-                if (room[row][col] == 4)
+                if (room.layer1[row][col] == 4)
                 {
                     c.drawBitmap(wall_right, x, y, paint);
                     barriers.add(new Barrier(x, y, temp, temp, false, 0));
                 }
 
-                if (room[row][col] == 0)
+                if (room.layer1[row][col] == 0)
                     c.drawBitmap(floor, x, y, paint);
             }
         }
 
         int objWidth = options3.outWidth;
         int objHeight = options3.outHeight;
-        for (int row=0;row < objectsInRoom.length;row++) {
-            for (int col = 0; col < objectsInRoom[row].length; col++) {
+        for (int row=0;row < room.layer2.length;row++) {
+            for (int col = 0; col < room.layer2[row].length; col++) {
                 int x = (col*temp) + horizontalOffset;
                 int y = (row*temp) + verticalOffset;
 
                 // TODO - switch case
-                if (objectsInRoom[row][col] == 6)
+                if (room.layer2[row][col] == 6)
                 {
                     c.drawBitmap(rubble, x, y, paint);
                     barriers.add(new Barrier(x, y, temp, temp, true, 1));
-                    c.drawRect(x, y, x + temp, y + temp, paint);
+                    //c.drawRect(x, y, x + temp, y + temp, paint);
                 }
-                if (objectsInRoom[row][col] == 7)
+                if (room.layer2[row][col] == 7)
                 {
                     c.drawBitmap(jukebox, x, y, paint);
                     barriers.add(new Barrier(x, y, temp, temp, true, 2));
-                    c.drawRect(x, y, x + temp, y + temp, paint);
+                    //c.drawRect(x, y, x + temp, y + temp, paint);
                 }
-                if (objectsInRoom[row][col] == 8)
+                if (room.layer2[row][col] == 8)
                 {
                     c.drawBitmap(crate, x, y, paint);
                     barriers.add(new Barrier(x, y, temp, temp, false, 0));
                 }
-                if (objectsInRoom[row][col] == 9)
+                if (room.layer2[row][col] == 9)
                 {
                     c.drawBitmap(pot, x, y, paint);
                     barriers.add(new Barrier(x, y, temp, temp, true, 3));
                 }
-                if (objectsInRoom[row][col] == 10)
+                if (room.layer2[row][col] == 10)
                 {
                     c.drawBitmap(skelly, x, y, paint);
                     barriers.add(new Barrier(x, y, temp, temp, true, 4));
@@ -304,6 +264,7 @@ public class GameView extends View {
                 character.moving = true;
                 int xDiff = x - joystick.x;
                 int yDiff = y - joystick.y;
+
 
                 if (xDiff > 0)
                 {
