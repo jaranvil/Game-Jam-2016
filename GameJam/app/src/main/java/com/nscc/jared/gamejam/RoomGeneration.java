@@ -30,6 +30,7 @@ public class RoomGeneration
         cornerCy = rn.nextInt(11)+4;
 
         room = new int[cornerBx][cornerCy];
+        //create room array
         for(int c=0; c<cornerBx; c++)
         {
             for(int r=0; r<cornerCy-1; r++)
@@ -55,6 +56,18 @@ public class RoomGeneration
                     room[c][r] = 0; //floors
                 }
             }//end for
+        }
+
+        //create a door?
+        if(cornerCy%2 !=0)
+        {
+            int doorNum = (cornerCy+1)/2;
+            room[0][doorNum] = 30;//door
+            room[cornerBx][doorNum] = 30;//door
+        } else if(cornerCy%2 == 0){
+            int doorNum = (cornerCy)/2;
+            room[0][doorNum] = 30;//door
+            room[cornerBx][doorNum] = 30;//door
         }
 
     }//end createRoom
