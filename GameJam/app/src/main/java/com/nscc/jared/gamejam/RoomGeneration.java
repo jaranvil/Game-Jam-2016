@@ -19,6 +19,11 @@ public class RoomGeneration
 
     Random rn = new Random();
 
+    public int[][] getRoom()
+    {
+        return room;
+    }
+
     public void createRoom()
     {
         cornerBx = rn.nextInt(11)+4;
@@ -54,5 +59,3 @@ public class RoomGeneration
 
     }//end createRoom
 }//end RoomGeneration
-
-//c==0 || c==cornerBx-1 || r==0 || r==cornerCy-1
