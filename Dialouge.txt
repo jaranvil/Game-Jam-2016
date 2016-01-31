@@ -18,3 +18,17 @@
 <string name=“toast”>“Goodbye, toaster.”</string>
 <string name=“yayjob”>“I did a good job.”</string>
 <string name=“wherei”>“Wha..? Where am I?”</string>
+<string name=“elip”>“...”</string>
+<string name=“whatami”>“What am I doing here?”</string>
+<string name=“howday”>”He’s not responding. He must be having a bad day.”>
+<string name=”istues”>”You don’t know if it’s Tuesday.”</string>
+<string name=”tooheav”>”Ahh… That’s too heavy.”</string>
+<string name=”ydisc”>”You don’t have a disc.”
+<string name=”noboog”>”No silly, you need music to boogie.”</string>
+<string name=”poison”>”Yuck. Not for me.”</string>
+<string name=”glug”>”Glug, glug, glug.”</string>
+<string name=”purp”>”What is my purpose?”</string>
+<string name=”nopurp”>”I feel as though I will never find my purpose.”</string>
+<string name=”feel”>”If robots’ could feel, I believe this emotion would be called hopelessness.”</string>
+<string name=”purpno”>”Will I ever find my purpose?”</string>
+<string name=”strongp”>”WILL I EVER FIND MY PURPOSE?”</string>
